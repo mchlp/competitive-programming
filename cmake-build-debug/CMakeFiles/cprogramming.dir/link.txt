@@ -1,0 +1,1 @@
+/usr/bin/c++  -g   CMakeFiles/cprogramming.dir/DMOJ/CCC/ccc01s3.cpp.o  -o cprogramming 
