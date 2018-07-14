@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/cprogramming2.iml" filepath="$PROJECT_DIR$/.idea/cprogramming2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/cprogramming.iml" filepath="$PROJECT_DIR$/.idea/cprogramming.iml" />
     </modules>
   </component>
 </project>
