@@ -3,4 +3,4 @@ project(cprogramming)
 
 set(CMAKE_CXX_STANDARD 11)
 
-add_executable(cprogramming DMOJ/TLE/tle17c8p2.cpp)
+add_executable(cprogramming DMOJ/DMPG/dmpg15g5.cpp)
