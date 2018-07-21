@@ -3,31 +3,54 @@
 #include <bits/stdc++.h>
 
 using namespace std;
-
-priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int ,int>>> pq;
+long long dp[2002];
+priority_queue<pair<long long, long long>, vector<pair<long long, long long>>, less<pair<long long, long long>>> pq;
+vector<pair<long long, long long>> pairs;
 
 int main() {
 
-    // cost V-->1, V/2-->2, V/3-->3, 1-->V
-    // to get top k values, use priority queue, size of PQ is K
-    // 0-1 knapsack, not limited
+    memset(dp, 0, sizeof dp);
 
-    int N, R;
-    scanf("%d %d", &N, &R);
+    long long zeroCount = 0;
+
+    long long N, R;
+    scanf("%lld %lld", &N, &R);
 
     while (N--) {
-        int E, C, V, CA, CB, CM, VA, VB, VM;
-        scanf("%d %d %d %d %d %d %d %d %d", &E, &C, &V, &CA, &CB, &CM, &VA, &VB, &VM);
+        long long E, C, V, CA, CB, CM, VA, VB, VM;
+        scanf("%lld %lld %lld %lld %lld %lld %lld %lld %lld", &E, &C, &V, &CA, &CB, &CM, &VA, &VB, &VM);
+
         while (E--) {
-            // cost, value
-            pair<int, int> pii;
-            pii.first = C;
-            pii.second = V;
-            pq.push(pii);
-            C = ((C*CA) + CB) % CM;
-            V = ((V*VA) + VB) % VM;
+
+            if (C <= R && V > 0) {
+                pair<long long, long long> pair;
+                pair.first = C;
+                pair.second = V;
+                pq.push(pair);
+
+                C = ((C * CA) + CB) % CM;
+                V = ((V * VA) + VB) % VM;
+            }
+        }
+
+        while (!pq.empty()) {
+            if (pq.top().first != 0) {
+                pairs.push_back(pq.top());
+            } else {
+                zeroCount += pq.top().second;
+            }
+            pq.pop();
+        }
+
+        while (!pairs.empty()) {
+            for (int j=R; j >= pairs.back().first; j--) {
+                dp[j] = max(dp[j], dp[j-pairs.back().first] + pairs.back().second);
+            }
+            pairs.pop_back();
         }
     }
+
+    printf("%lld\n", dp[R] + zeroCount);
 
     return 0;
 }
