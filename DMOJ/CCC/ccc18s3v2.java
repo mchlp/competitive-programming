@@ -9,8 +9,8 @@ public class ccc18s3v2 {
     private static boolean[][] visited = new boolean[101][101];
 
     private enum Direction {
-        UP(0, 1),
-        DOWN(0, -1),
+        UP(0, -1),
+        DOWN(0, 1),
         LEFT(-1, 0),
         RIGHT(1, 0);
 
@@ -36,44 +36,44 @@ public class ccc18s3v2 {
     private static void expandCamera(Point p) {
         int x = p.x;
         int y = p.y;
-        do {
+        while (x >= 0) {
+            if (map[y][x] == '.' || map[y][x] == 'S') {
+                map[y][x] = 'X';
+            } else if (map[y][x] == 'W') {
+                break;
+            }
             x--;
-            if (map[x][y] == '.') {
-                map[x][y] = 'X';
-            } else if (map[x][y] == 'W') {
-                break;
-            }
-        } while (x >= 0);
+        }
         x = p.x;
         y = p.y;
-        do {
+        while (x < M) {
+            if (map[y][x] == '.' || map[y][x] == 'S') {
+                map[y][x] = 'X';
+            } else if (map[y][x] == 'W') {
+                break;
+            }
             x++;
-            if (map[x][y] == '.') {
-                map[x][y] = 'X';
-            } else if (map[x][y] == 'W') {
-                break;
-            }
-        } while (x < N);
+        }
         x = p.x;
         y = p.y;
-        do {
+        while (y >= 0) {
+            if (map[y][x] == '.' || map[y][x] == 'S') {
+                map[y][x] = 'X';
+            } else if (map[y][x] == 'W') {
+                break;
+            }
             y--;
-            if (map[x][y] == '.') {
-                map[x][y] = 'X';
-            } else if (map[x][y] == 'W') {
-                break;
-            }
-        } while (y >= 0);
+        }
         x = p.x;
         y = p.y;
-        do {
-            y++;
-            if (map[x][y] == '.') {
-                map[x][y] = 'X';
-            } else if (map[x][y] == 'W') {
+        while (y < N) {
+            if (map[y][x] == '.' || map[y][x] == 'S') {
+                map[y][x] = 'X';
+            } else if (map[y][x] == 'W') {
                 break;
             }
-        } while (y < N);
+            y++;
+        }
     }
 
     public static void main(String[] args) {
@@ -88,7 +88,7 @@ public class ccc18s3v2 {
             for (int j = 0; j < M; j++) {
                 map[i][j] = mapLine[j];
                 if (mapLine[j] == 'S') {
-                    start = new Point(i, j);
+                    start = new Point(j, i);
                 }
             }
         }
@@ -96,35 +96,41 @@ public class ccc18s3v2 {
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < M; j++) {
                 if (map[i][j] == 'C') {
-                    expandCamera(new Point(i, j));
+                    expandCamera(new Point(j, i));
                 }
             }
         }
 
         ArrayDeque<Point> deque = new ArrayDeque<>();
-        dp[start.x][start.y] = 0;
-        visited[start.x][start.y] = true;
-
-        deque.addLast(start);
+        dp[start.y][start.x] = 0;
+        if (map[start.y][start.x] == 'X') {
+            dp[start.y][start.x] = -1;
+        } else {
+            deque.addLast(start);
+        }
+        visited[start.y][start.x] = true;
         while (!deque.isEmpty()) {
             Point curPoint = deque.removeFirst();
+            char curPointChar = map[curPoint.y][curPoint.x];
             for (Direction direction : Direction.values()) {
                 Point testPoint = new Point(curPoint.x + direction.x, curPoint.y + direction.y);
-                if (!visited[testPoint.x][testPoint.y]) {
-                    switch (map[testPoint.x][testPoint.y]) {
-                        case '.':
-                            deque.addLast(testPoint);
-                            dp[testPoint.x][testPoint.y] = dp[curPoint.x][curPoint.y] + 1;
-                            visited[testPoint.x][testPoint.y] = true;
-                            break;
-                        case 'L':
-                        case 'R':
-                        case 'U':
-                        case 'D':
-                            deque.addLast(testPoint);
-                            dp[testPoint.x][testPoint.y] = dp[curPoint.x][curPoint.y];
-                            visited[testPoint.x][testPoint.y] = true;
-                            break;
+                if (!visited[testPoint.y][testPoint.x]) {
+                    if (curPointChar == 'S' || curPointChar == '.' || (curPointChar == 'L' && direction.name().equals("LEFT")) || (curPointChar == 'R' && direction.name().equals("RIGHT")) || (curPointChar == 'U' && direction.name().equals("UP")) || (curPointChar == 'D' && direction.name().equals("DOWN"))) {
+                        switch (map[testPoint.y][testPoint.x]) {
+                            case '.':
+                                deque.addLast(testPoint);
+                                dp[testPoint.y][testPoint.x] = dp[curPoint.y][curPoint.x] + 1;
+                                visited[testPoint.y][testPoint.x] = true;
+                                break;
+                            case 'L':
+                            case 'R':
+                            case 'U':
+                            case 'D':
+                                deque.addFirst(testPoint);
+                                dp[testPoint.y][testPoint.x] = dp[curPoint.y][curPoint.x];
+                                visited[testPoint.y][testPoint.x] = true;
+                                break;
+                        }
                     }
                 }
             }
@@ -138,7 +144,7 @@ public class ccc18s3v2 {
                     } else {
                         System.out.println(-1);
                     }
-                } else if (map[i][j] == 'X') {
+                } else if (map[i][j] == 'X' && !(i == start.y && j == start.x)) {
                     System.out.println(-1);
                 }
             }
