@@ -3,4 +3,4 @@ project(cprogramming)
 
 set(CMAKE_CXX_STANDARD 11)
 
-add_executable(cprogramming DMOJ/Other/acoinproblem.cpp)
+add_executable(cprogramming DMOJ/DWITE/dwite07c2p5.cpp)
