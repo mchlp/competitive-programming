@@ -3,4 +3,4 @@ project(cprogramming)
 
 set(CMAKE_CXX_STANDARD 11)
 
-add_executable(cprogramming DMOJ/CCC/ccc18s3.cpp)
+add_executable(cprogramming CCC/p4.cpp)
