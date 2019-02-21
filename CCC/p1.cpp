@@ -3,15 +3,34 @@
 using namespace std;
 
 int N;
+int mirror[2][2] = {{1, 2},
+                    {3, 4}};
+int newMirror[2][2];
+char seq[1000001];
 
 int main() {
-    scanf("%d", &N);
-    int ways = 0;
-    for (int i=0; i<=N/2; i++) {
-        if (N - i <= 5) {
-            ways++;
+
+    scanf("%s", &seq[0]);
+
+    bool hflip = false;
+    bool vflip = false;
+
+    for (int i = 0; i < strlen(seq); i++) {
+        if (seq[i] == 'H') {
+            hflip = !hflip;
+        } else {
+            vflip = !vflip;
         }
     }
-    printf("%d\n", ways);
+
+    if (hflip && vflip) {
+        printf("4 3\n2 1");
+    } else if (hflip) {
+        printf("3 4\n1 2");
+    } else if (vflip){
+        printf("2 1\n4 3");
+    } else {
+        printf("1 2\n3 4");
+    }
     return 0;
 }

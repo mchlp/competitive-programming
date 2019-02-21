@@ -2,34 +2,47 @@
 
 using namespace std;
 
-int N;
-int sum1, sum2, k;
-int run1[100001];
-int run2[100001];
+int T, N;
+unordered_set<int> primes;
 
-int main() {
-
-    scanf("%d", &N);
-    sum1 = 0;
-    sum2 = 0;
-    k = 0;
-
-    for (int i=0; i<N; i++) {
-        scanf("%d", &run1[i]);
+bool checkPrime(int num) {
+    if (primes.count(num) > 0) {
+        return true;
     }
 
-
-    for (int i=0; i<N; i++) {
-        scanf("%d", &run2[i]);
+    if (num == 1) {
+        return false;
     }
 
-    for (int i=0; i<N; i++) {
-        sum1 += run1[i];
-        sum2 += run2[i];
-        if (sum1 == sum2) {
-            k = i+1;
+    if (num == 2) {
+        return true;
+    }
+
+    bool prime = true;
+    for (int i=2; i<=sqrt(num)+1; i++) {
+        if (num % i == 0) {
+            prime = false;
+            break;
         }
     }
-    printf("%d\n", k);
+
+    if (prime) {
+        primes.insert(num);
+        return true;
+    }
+    return false;
+}
+
+int main() {
+    scanf("%d", &T);
+    for (int _=0; _<T; _++) {
+        scanf("%d", &N);
+        for (int i=1; i<=N; i++) {
+            if (checkPrime(i) && checkPrime(N*2-i)) {
+                printf("%d %d\n", i, N*2-i);
+                break;
+            }
+        }
+    }
     return 0;
 }

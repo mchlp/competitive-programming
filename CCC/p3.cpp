@@ -2,52 +2,62 @@
 
 using namespace std;
 
-int N;
-vector<pair<int, int>> readings;
-vector<int> first;
-vector<int> second;
+int grid[3][3];
+bool good[3][3];
+int ogrid[3][3] = {{14, 20, 26}, {18, 18, 18}, {22, 16, 10}};
 
 int main() {
-    scanf("%d", &N);
-    for (int i=0; i<1001; i++) {
-        readings.push_back(make_pair(0, i));
-    }
-    for (int i=0; i<N; i++) {
-        int x;
-        scanf("%d", &x);
-        readings[x].first++;
-    }
-
-    sort(readings.begin(), readings.end());
-    reverse(readings.begin(), readings.end());
-
-    int max1 = readings[0].first;
-    first.push_back(readings[0].second);
-    int max2 = -1;
-    for (int i=1; i<1001; i++) {
-        if (readings[i].first == max1) {
-            first.push_back(readings[i].second);
-        } else if (max2 == -1){
-            max2 = readings[i].first;
-            second.push_back(readings[i].second);
-        } else if (max2 == readings[i].first) {
-            second.push_back(readings[i].second);
-        } else {
-            break;
-        }
-    }
-
-    if (first.size() > 1) {
-        sort(first.begin(), first.end());
-        printf("%d\n", abs(first[0] - first[first.size()-1]));
-    } else {
-        int maxDis = 0;
-        for (int i=0; i<second.size(); i++) {
-            if (abs(second[i] - first[0]) > maxDis) {
-                maxDis = abs(second[i] - first[0]);
+    for (int i=0; i<3; i++) {
+        for (int j=0; j<3; j++) {
+            string c;
+            scanf("%s", &c[0]);
+            if (c[0] == 'X') {
+                grid[i][j] = -1;
+                good[i][j] = false;
+            } else {
+                grid[i][j] = stoi(c);
+                good[i][j] = true;
             }
         }
-        printf("%d\n", maxDis);
+    }
+
+    for (int _=0; _<20; _++) {
+        for (int i = 0; i < 3; i++) {
+            if (!good[i][0] && good[i][1] && good[i][2]) {
+                grid[i][0] = grid[i][1] - (grid[i][2] - grid[i][1]);
+                good[i][0] = true;
+            } else if (!good[i][1] && good[i][0] && good[i][2]) {
+                grid[i][1] = (grid[i][2] - grid[i][0]) / 2 + grid[i][0];
+                good[i][1] = true;
+            } else if (!good[i][2] && good[i][0] && good[i][1]) {
+                grid[i][2] = (grid[i][1] - grid[i][0]) + grid[i][1];
+                good[i][2] = true;
+            }
+        }
+
+        for (int i = 0; i < 3; i++) {
+            if (!good[0][i] && good[1][i] && good[2][i]) {
+                grid[0][i] = grid[1][i] - (grid[2][i] - grid[1][i]);
+                good[0][i] = true;
+            } else if (!good[1][i] && good[2][i] && good[0][i]) {
+                grid[1][i] = (grid[2][i] - grid[0][i]) / 2 + grid[0][i];
+                good[1][i] = true;
+            } else if (!good[2][i] && good[1][i] && good[0][i]) {
+                grid[2][i] = (grid[1][i] - grid[0][i]) + grid[1][i];
+                good[2][i] = true;
+            }
+        }
+    }
+
+    for (int i=0; i<3; i++) {
+        for (int j=0; j<3; j++) {
+            if (good[i][j]) {
+                printf(" %d", grid[i][j]);
+            } else {
+                printf(" %d", ogrid[i][j]);
+            }
+        }
+        printf("\n");
     }
 
     return 0;
