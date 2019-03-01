@@ -5,51 +5,59 @@ using namespace std;
 #define MAXN 5005
 
 int N, M, D;
-long double graph[MAXN][MAXN];
-long double dis[MAXN];
+bool edge[MAXN][MAXN];
+double graph[MAXN][MAXN];
+double dis[MAXN];
 
 int main() {
     for (int _ = 0; _ < 10; _++) {
         for (int i = 0; i < MAXN; i++) {
             for (int j = 0; j < MAXN; j++) {
                 graph[i][j] = -1;
+                edge[i][j] = false;
             }
-            dis[i] = -1;
+            dis[i] = -INFINITY;
         }
         scanf("%d%d%d", &N, &M, &D);
         for (int i = 0; i < M; i++) {
             int a, b;
-            long double n;
-            scanf("%d%d%Lf", &a, &b, &n);
-            if (graph[a][b] < n) {
-                graph[a][b] = n;
+            double n;
+            scanf("%d%d%lf", &a, &b, &n);
+            if (graph[a][b] < log10(n)) {
+                graph[a][b] = log10(n);
+                edge[a][b] = true;
             }
         }
+        stack<pair<int, double>> stack;
+        stack.push(make_pair(1, log10(D)));
+        dis[1] = log10(D);
 
-        stack<pair<int, long double>> stack;
-        stack.push(make_pair(1, D));
-        dis[1] = D;
+        bool rich = false;
 
         while (!stack.empty()) {
-            pair<int, long double> cur = stack.top();
+            pair<int, double> cur = stack.top();
             stack.pop();
-            if (dis[cur.first] >= 1e9) {
+            if (rich) {
                 break;
             }
             for (int i = 1; i <= N; i++) {
-                if (graph[cur.first][i] != -1) {
-                    long double newMoney = cur.second / graph[cur.first][i];
+                if (edge[cur.first][i]) {
+                    double newMoney = cur.second - graph[cur.first][i];
                     if (dis[i] <= newMoney) {
                         stack.push(make_pair(i, newMoney));
                         dis[i] = newMoney;
                     }
+                    if (i == N && newMoney >= 9) {
+                        rich = true;
+                        break;
+                    }
                 }
             }
         }
-        if (dis[N] >= 1e9) {
+        if (dis[N] >= 9) {
             printf("Billionaire!\n");
         } else {
-            printf("%.2Lf\n", dis[N] > 0 ?  dis[N] : 0);
+            printf("%.2lf\n", pow(10, dis[N]));
         }
     }
     return 0;
