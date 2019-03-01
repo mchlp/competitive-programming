@@ -13,7 +13,7 @@ public class RGPC17p4 {
 
         long[][] inputData = new long[numPoint + 1][numPoint + 1];
 
-        boolean good = true;
+        boolean trygood = true;
 
         for (int i = 0; i < numPath; i++) {
             input = in.readLine().split(" ");
@@ -21,12 +21,12 @@ public class RGPC17p4 {
             int end = Integer.parseInt(input[1]);
             long dis = Integer.parseInt(input[2]);
             if (end <= start) {
-                good = false;
+                trygood = false;
                 break;
             }
             inputData[start][end] = dis;
         }
-        if (good) {
+        if (trygood) {
             for (int start = 1; start <= numPoint; start++) {
                 for (int end = numPoint; end > start; end--) {
                     if (inputData[start][end] > 0) {
@@ -49,7 +49,7 @@ public class RGPC17p4 {
             }
         }
 
-        if (!good) {
+        if (!trygood) {
             System.out.println(-1);
         }
         else {

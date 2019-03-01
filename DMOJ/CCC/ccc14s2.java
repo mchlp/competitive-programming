@@ -29,7 +29,7 @@ public class ccc14s2 {
                 }
             }
         }
-        System.out.println("good");
+        System.out.println("trygood");
     }
 
 
