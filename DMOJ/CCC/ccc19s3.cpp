@@ -188,8 +188,10 @@ int main() {
     }
 
     if (gcount < 3) {
-        good[1][1] = true;
-        grid[1][1] = 0;
+        if (!good[1][1]) {
+            good[1][1] = true;
+            grid[1][1] = 0;
+        }
     }
 
     if (gcount == 0) {
@@ -197,9 +199,9 @@ int main() {
         return 0;
     }
 
-    if (!check()) {
+    while (!check()) {
         if (!trygood[1][0]) {
-            for (int i = -10000000; i < 10000000; i++) {
+            for (int i = -1000000; i < 1000000; i++) {
                 reset();
                 trygrid[1][0] = i;
                 trygood[1][0] = true;
@@ -210,7 +212,7 @@ int main() {
             }
         }
         else if (!trygood[1][1]) {
-            for (int i = -10000000; i < 10000000; i++) {
+            for (int i = -1000000; i < 1000000; i++) {
                 reset();
                 trygrid[1][1] = i;
                 trygood[1][1] = true;
@@ -221,7 +223,7 @@ int main() {
             }
         }
         else if (!trygood[1][2]) {
-            for (int i = -10000000; i < 10000000; i++) {
+            for (int i = -1000000; i < 1000000; i++) {
                 reset();
                 trygrid[1][2] = i;
                 trygood[1][2] = true;

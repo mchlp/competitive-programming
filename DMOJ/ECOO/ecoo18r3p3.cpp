@@ -13,7 +13,7 @@ int main() {
     for (int _ = 0; _ < 10; _++) {
         for (int i = 0; i < MAXN; i++) {
             for (int j = 0; j < MAXN; j++) {
-                graph[i][j] = -1;
+                graph[i][j] = -INFINITY;
                 edge[i][j] = false;
             }
             dis[i] = -INFINITY;
@@ -28,33 +28,33 @@ int main() {
                 edge[a][b] = true;
             }
         }
-        stack<pair<int, double>> stack;
-        stack.push(make_pair(1, log10(D)));
+        queue<pair<int, double>> queue;
+        queue.push(make_pair(1, log10(D)));
         dis[1] = log10(D);
 
         bool rich = false;
 
-        while (!stack.empty()) {
-            pair<int, double> cur = stack.top();
-            stack.pop();
+        while (!queue.empty()) {
+            pair<int, double> cur = queue.front();
+            queue.pop();
             if (rich) {
                 break;
             }
             for (int i = 1; i <= N; i++) {
                 if (edge[cur.first][i]) {
                     double newMoney = cur.second - graph[cur.first][i];
-                    if (dis[i] <= newMoney) {
-                        stack.push(make_pair(i, newMoney));
+                    if (dis[i] < newMoney) {
+                        queue.push(make_pair(i, newMoney));
                         dis[i] = newMoney;
                     }
-                    if (i == N && newMoney >= 9) {
+                    if (newMoney >= 9) {
                         rich = true;
                         break;
                     }
                 }
             }
         }
-        if (dis[N] >= 9) {
+        if (rich || dis[N] >= 9) {
             printf("Billionaire!\n");
         } else {
             printf("%.2lf\n", pow(10, dis[N]));
