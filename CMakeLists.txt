@@ -3,4 +3,4 @@ project(cprogramming)
 
 set(CMAKE_CXX_STANDARD 11)
 
-add_executable(cprogramming DMOJ/CCC/ccc03s5.cpp)
+add_executable(cprogramming DMOJ/Other/treeCutting.cpp)
