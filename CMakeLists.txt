@@ -3,4 +3,4 @@ project(cprogramming)
 
 set(CMAKE_CXX_STANDARD 11)
 
-add_executable(cprogramming DMOJ/DMOPC/dmopc14c3p6.cpp)
+add_executable(cprogramming DMOJ/DMOPC/dmopc15c1p5.cpp)
