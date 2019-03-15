@@ -128,8 +128,8 @@ int main() {
             }
         }
 
-        for (int i = 0; i < C; i++) {
-            for (int j = 0; j < R; j++) {
+        for (int i = 0; i < R; i++) {
+            for (int j = 0; j < C; j++) {
                 if (!marked[j][i]) {
                     printf("%c", words[j][i]);
                 }
