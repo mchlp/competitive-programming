@@ -2,66 +2,66 @@
 
 using namespace std;
 
-#define MAXT 1000002
+int N;
+vector<pair<int, int>> verts;
+
+long long getDisSquared(pair<int, int> v1, pair<int, int> v2) {
+    return (v1.first - v2.first) * (v1.first - v2.first) + (v1.second - v2.second) * (v1.second - v2.second);
+}
+
+bool same(pair<int, int> v1, pair<int, int> v2) {
+    return (v1.first == v2.first && v1.second == v2.second);
+}
 
 int main() {
     freopen("DATA22.txt", "r", stdin);
     int _ = 10;
     while (_--) {
-        int N;
+        verts.clear();
         scanf("%d", &N);
-        set<int> checked;
-        bool s1[MAXT];
-        bool s2[MAXT];
-        bool s3[MAXT];
-        memset(s1, false, sizeof s1);
-        memset(s2, false, sizeof s2);
-        memset(s3, false, sizeof s3);
         for (int i = 0; i < N; i++) {
-            int num;
-            scanf("%d", &num);
-            s1[num] = true;
+            int x, y;
+            scanf("%d%d", &x, &y);
+            verts.push_back(make_pair(x, y));
         }
 
-        for (int i = 0; i < MAXT; i++) {
-            if (s1[i]) {
-                int b = i;
-                for (int j = 0; j < MAXT; j++) {
-                    if (s1[j]) {
-                        if (b * j <= MAXT) {
-                            s2[b * j] = true;
-                        }
+        if (N % 2 == 1) {
+            printf("0\n");
+        } else {
+            int numSym = 0;
+            for (int i = 0; i < N / 2; i++) {
+                pair<int, int> top = verts[i];
+                pair<int, int> bottom = verts[i + N / 2];
 
-                        if (b + j <= MAXT) {
-                            s2[b + j] = true;
+                bool sym = true;
+
+                for (int j = 0; j < N / 2; j++) {
+                    int v1Ind = ((i + j) + N) % N;
+                    int v2Ind = ((i - j) + N) % N;
+                    if (!same(top, verts[v1Ind]) && !same(bottom, verts[v1Ind]) && !same(top, verts[v2Ind]) &&
+                        !same(bottom, verts[v2Ind])) {
+
+                        pair<long long, long long> curDis;
+                        curDis.first = getDisSquared(top, verts[v1Ind]);
+                        curDis.second = getDisSquared(bottom, verts[v1Ind]);
+
+                        pair<long long, long long> oppDis;
+                        oppDis.first = getDisSquared(top, verts[v2Ind]);
+                        oppDis.second = getDisSquared(bottom, verts[v2Ind]);
+
+                        if (!same(curDis, oppDis)) {
+                            sym = false;
+                            break;
                         }
                     }
                 }
-            }
-        }
 
-        for (int i = 0; i < MAXT; i++) {
-            if (s2[i] && !s1[i]) {
-                int b = i;
-                for (int j = 0; j < MAXT; j++) {
-                    if (s1[j]) {
-                        if (b * j <= MAXT) {
-                            s3[b * j] = true;
-                        }
-
-                        if (b + j <= MAXT) {
-                            s3[b + j] = true;
-                        }
-                    }
+                if (sym) {
+                    numSym++;
                 }
-            }
-        }
 
-        for (int i = 0; i < 5; i++) {
-            int tar;
-            scanf("%d", &tar);
-            printf("%c", s3[tar] ? 'T' : 'F');
+            }
+            printf("%d\n", numSym);
         }
-        printf("\n");
     }
 }

@@ -8,7 +8,7 @@ long long rib[MAXN];
 
 int main(){
 
-    freopen("DATA32.txt", "r", stdin);
+    freopen("DATA31.txt", "r", stdin);
 
     int _=10;
     while (_--) {

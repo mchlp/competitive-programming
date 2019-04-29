@@ -3,4 +3,4 @@ project(cprogramming)
 
 set(CMAKE_CXX_STANDARD 11)
 
-add_executable(cprogramming DMOJ/ECOO/ecoo14r2p2.cpp)
+add_executable(cprogramming ECOO/p3.cpp)
