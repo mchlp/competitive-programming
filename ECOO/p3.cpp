@@ -2,59 +2,48 @@
 
 using namespace std;
 
-#define MAXN 50000002
+unordered_map<int, int> ranges;
 
-long long rib[MAXN];
+void leftFold(int P) {
+
+}
+
+void rightFold(int P) {
+
+}
 
 int main(){
 
-    freopen("DATA32.txt", "r", stdin);
+    freopen("DATA31.txt", "r", stdin);
 
     int _=10;
     while (_--) {
         int N, M;
-        memset(rib, 0, sizeof rib);
+        ranges.clear();
         scanf("%d%d\n", &N, &M);
 
-        for (int i=MAXN/2; i<MAXN/2+N; i++) {
-            rib[i] = 1;
-        }
+        ranges[0] = 1;
+        ranges[N] = -1;
 
         for (int i=0; i<M; i++) {
             char c;
             int p;
             cin >> p >> c;
-            p += (MAXN/2);
-            p--;
-            if (c == 'L') {
-                int k=1;
-                while (rib[p-k] > 0) {
-                    rib[p+k-1] += rib[p-k];
-                    rib[p-k] = 0;
-                    k++;
-                }
-            } else {
-                int k=1;
-                while (rib[p+k] > 0) {
-                    rib[p-k+1] += rib[p+k];
-                    rib[p+k] = 0;
-                    k++;
-                }
+        }
+
+        int len = ranges[ranges.size()-1] - ranges[0];
+
+        int maxT = 0;
+        int curT = 0;
+
+        for (int i=0; i<ranges.size(); i++) {
+            curT += ranges[i];
+            if (curT > maxT) {
+                maxT = curT;
             }
         }
 
-        int len = 0;
-        long long maxT = 0;
-        for (int i=0; i<MAXN; i++) {
-            if (rib[i] > 0) {
-                len++;
-                if (rib[i] > maxT) {
-                    maxT = rib[i];
-                }
-            }
-        }
-
-        printf("%d %lld\n", len, maxT);
+        printf("%d %d\n", len, maxT);
     }
 
     return 0;
