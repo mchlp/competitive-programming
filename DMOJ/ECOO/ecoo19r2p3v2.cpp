@@ -71,8 +71,6 @@ void rightFold(int P) {
 
 int main() {
 
-    freopen("DATA31.txt", "r", stdin);
-
     int _ = 10;
     while (_--) {
         int N, M;
