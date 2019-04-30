@@ -7,6 +7,7 @@ int relief[1000002];
 deque<pair<int, int>> q;
 
 int main() {
+    freopen("DATA41.txt", "r", stdin);
     int _ = 10;
     while (_--) {
 
