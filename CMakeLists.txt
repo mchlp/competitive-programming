@@ -3,4 +3,4 @@ project(cprogramming)
 
 set(CMAKE_CXX_STANDARD 11)
 
-add_executable(cprogramming ECOO/p4.cpp)
+add_executable(cprogramming LeetCode/rotateImage.cpp)
